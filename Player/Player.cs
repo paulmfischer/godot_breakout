@@ -11,8 +11,8 @@ public partial class Player : CharacterBody2D
 	public Vector2 ScreenSize; // Size of the game window.
 
 	public override void _Ready()
-    {
-        base._Ready();
+	{
+		base._Ready();
 				ScreenSize = GetViewportRect().Size;
 				var bottomOffset = ScreenSize.Y * PaddleBottomOffset;
 				GD.Print($"Screen size: {ScreenSize.Y}, PaddleOffset %: {PaddleBottomOffset}, bottom offset: {bottomOffset}, starting y: {ScreenSize.Y - bottomOffset}");
@@ -22,7 +22,7 @@ public partial class Player : CharacterBody2D
 				);
 	}
 
-    public override void _PhysicsProcess(double delta)
+	public override void _PhysicsProcess(double delta)
 	{
 		var velocity = Vector2.Zero;
 
