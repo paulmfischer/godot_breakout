@@ -4,7 +4,7 @@ using System;
 public partial class Player : CharacterBody2D
 {
 	[Export]
-	public float Speed { get; set; } = 300.0f;
+	public float Speed { get; set; } = 20.0f;
 	[Export]
 	public float PaddleBottomOffset { get; set; } = 0.10f;
 
@@ -24,29 +24,29 @@ public partial class Player : CharacterBody2D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		var velocity = Vector2.Zero;
+		// Let player collide with walls and stop with physics!!!
+		CalculateVelocityFromInput();
+		MoveAndCollide(Velocity * (float)delta);
+	}
+
+	public void CalculateVelocityFromInput()
+	{
+		var inputDir = Vector2.Zero;
 
 		if (Input.IsActionPressed("move_right"))
 		{
-			velocity.X += 1;
+			inputDir.X += 1;
 		}
 
 		if (Input.IsActionPressed("move_left"))
 		{
-			velocity.X -= 1;
+			inputDir.X -= 1;
 		}
 
-		if (velocity.Length() > 0)
+		if (inputDir.Length() > 0)
 		{
-			velocity = velocity.Normalized() * Speed;
+			inputDir = inputDir.Normalized() * Speed;
 		}
-
-		var sprite = GetNode<Sprite2D>("Sprite2D");
-		var spriteHalfWidth = sprite.Texture.GetWidth() * sprite.Scale.X / 2;
-		Position += velocity * (float)delta;
-		// Position = new Vector2(
-		// 	x: Mathf.Clamp(Position.X, 0 + spriteHalfWidth, ScreenSize.X - spriteHalfWidth),
-		// 	y: Position.Y
-		// );
+		Velocity = inputDir * Speed;
 	}
 }
