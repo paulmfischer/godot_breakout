@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://cvl0tc628ym1n"]
+[gd_scene load_steps=5 format=3 uid="uid://cvl0tc628ym1n"]
 
+[ext_resource type="Script" path="res://Ball/Ball.cs" id="1_a5dsc"]
 [ext_resource type="Texture2D" uid="uid://b256phv6anojc" path="res://Ball/ball_breakout.png" id="1_htmvq"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_iie1p"]
@@ -11,9 +12,15 @@ radius = 15.0333
 
 [node name="Ball" type="RigidBody2D"]
 physics_material_override = SubResource("PhysicsMaterial_iie1p")
+linear_damp_mode = 1
+script = ExtResource("1_a5dsc")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_htmvq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_el1a5")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnScreenExited"]

@@ -1,15 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://dxgrlkyu0lt82"]
+[gd_scene load_steps=5 format=3 uid="uid://cgin80jgm80pu"]
 
 [ext_resource type="Script" path="res://Main.cs" id="1_4n8t6"]
-[ext_resource type="PackedScene" uid="uid://dkwswcutdlko7" path="res://Wall/wall.tscn" id="1_jr4pt"]
+[ext_resource type="PackedScene" uid="uid://c8x08ihnsetid" path="res://Wall/wall.tscn" id="1_jr4pt"]
 [ext_resource type="PackedScene" uid="uid://d1gb1a2uvae2l" path="res://Player/player.tscn" id="3_jhj8d"]
+[ext_resource type="PackedScene" uid="uid://cvl0tc628ym1n" path="res://Ball/ball.tscn" id="4_7nho1"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_4n8t6")
+BallScene = ExtResource("4_7nho1")
 
 [node name="Player" parent="." instance=ExtResource("3_jhj8d")]
 position = Vector2(182, 532)
-Speed = 25.0
+motion_mode = 1
+slide_on_ceiling = false
 PaddleBottomOffset = 0.08
 
 [node name="TopWall" parent="." instance=ExtResource("1_jr4pt")]
