@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cgin80jgm80pu"]
+[gd_scene load_steps=6 format=3 uid="uid://cgin80jgm80pu"]
 
 [ext_resource type="Script" path="res://Main.cs" id="1_4n8t6"]
 [ext_resource type="PackedScene" uid="uid://c8x08ihnsetid" path="res://Wall/wall.tscn" id="1_jr4pt"]
 [ext_resource type="PackedScene" uid="uid://d1gb1a2uvae2l" path="res://Player/player.tscn" id="3_jhj8d"]
 [ext_resource type="PackedScene" uid="uid://cvl0tc628ym1n" path="res://Ball/ball.tscn" id="4_7nho1"]
+[ext_resource type="PackedScene" uid="uid://syud17kvv3mv" path="res://Brick/brick.tscn" id="5_i7j1f"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_4n8t6")
@@ -28,3 +29,6 @@ scale = Vector2(30, 1)
 position = Vector2(805, 300)
 rotation = 1.5708
 scale = Vector2(30, 1)
+
+[node name="Brick" parent="." instance=ExtResource("5_i7j1f")]
+position = Vector2(400, 150)

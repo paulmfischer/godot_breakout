@@ -9,7 +9,7 @@ public partial class Main : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		ResetBall();
+		InstantiateBall();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -23,14 +23,13 @@ public partial class Main : Node
 
 	public void OnBallExited()
 	{
-		ResetBall();
+		InstantiateBall();
 	}
-	public void ResetBall()
+
+	public void InstantiateBall()
 	{
 		Ball ball = BallScene.Instantiate<Ball>();
 		ball.OnBallExited += OnBallExited;
-		ball.Position = new Vector2(400, 480);
-		ball.LinearVelocity = new Vector2(200, -200);
 		AddChild(ball);
 	}
 }

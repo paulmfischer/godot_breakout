@@ -11,9 +11,13 @@ bounce = 1.0
 radius = 15.0333
 
 [node name="Ball" type="RigidBody2D"]
+scale = Vector2(0.75, 0.75)
 physics_material_override = SubResource("PhysicsMaterial_iie1p")
+max_contacts_reported = 1
+contact_monitor = true
 linear_damp_mode = 1
 script = ExtResource("1_a5dsc")
+metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_htmvq")
@@ -23,4 +27,5 @@ shape = SubResource("CircleShape2D_el1a5")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnScreenExited"]

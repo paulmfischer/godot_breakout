@@ -26,7 +26,13 @@ public partial class Player : CharacterBody2D
 	{
 		// Let player collide with walls and stop with physics!!!
 		CalculateVelocityFromInput();
-		MoveAndCollide(Velocity * (float)delta);
+		var collision = MoveAndCollide(Velocity * (float)delta);
+		if (collision != null)
+		{
+			GD.PrintS("Collided with", ((Node)collision.GetCollider()).Name);
+			var bottomOffset = ScreenSize.Y * PaddleBottomOffset;
+			Position = new Vector2(Position.X, ScreenSize.Y - bottomOffset);
+		}
 	}
 
 	public void CalculateVelocityFromInput()

@@ -8,7 +8,6 @@ radius = 8.0
 height = 64.0
 
 [node name="Player" type="CharacterBody2D"]
-position = Vector2(576, 476)
 script = ExtResource("1_o3xk8")
 metadata/_edit_group_ = true
 
