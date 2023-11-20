@@ -9,6 +9,9 @@
 [node name="Main" type="Node"]
 script = ExtResource("1_4n8t6")
 BallScene = ExtResource("4_7nho1")
+BrickScene = ExtResource("5_i7j1f")
+BrickRows = 2
+BrickCols = 2
 
 [node name="Player" parent="." instance=ExtResource("3_jhj8d")]
 position = Vector2(182, 532)
@@ -29,6 +32,3 @@ scale = Vector2(30, 1)
 position = Vector2(805, 300)
 rotation = 1.5708
 scale = Vector2(30, 1)
-
-[node name="Brick" parent="." instance=ExtResource("5_i7j1f")]
-position = Vector2(400, 150)
