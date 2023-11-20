@@ -11,7 +11,7 @@ script = ExtResource("1_4n8t6")
 BallScene = ExtResource("4_7nho1")
 BrickScene = ExtResource("5_i7j1f")
 BrickRows = 2
-BrickCols = 2
+BrickCols = 5
 
 [node name="Player" parent="." instance=ExtResource("3_jhj8d")]
 position = Vector2(182, 532)

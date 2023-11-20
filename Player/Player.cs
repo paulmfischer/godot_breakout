@@ -29,7 +29,7 @@ public partial class Player : CharacterBody2D
 		var collision = MoveAndCollide(Velocity * (float)delta);
 		if (collision != null)
 		{
-			GD.PrintS("Collided with", ((Node)collision.GetCollider()).Name);
+			// GD.PrintS("Collided with", ((Node)collision.GetCollider()).Name);
 			var bottomOffset = ScreenSize.Y * PaddleBottomOffset;
 			Position = new Vector2(Position.X, ScreenSize.Y - bottomOffset);
 		}

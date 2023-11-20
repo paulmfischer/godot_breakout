@@ -8,21 +8,20 @@ public partial class Main : Node
 	public PackedScene BallScene { get; set; }
 	[Export]
 	public PackedScene BrickScene { get; set; }
-	// [Export]
-	// public float TopPadding { get; set; }
-	// [Export]
-	// public float SidePadding { get; set; }
 	[Export]
-	public float BrickPadding { get; set; } = 5.0f;
+	public float TopBrickOffset { get; set; } = 50f;
+	[Export]
+	public float BrickPadding { get; set; } = 25.0f;
 	[Export]
 	public int BrickRows { get; set; }
 	[Export]
 	public int BrickCols { get; set; }
 
 	public Vector2 ScreenSize; // Size of the game window.
-	// Called when the node enters the scene tree for the first time.
+
 	public override void _Ready()
 	{
+		ScreenSize = GetViewport().GetVisibleRect().Size;
 		InstantiateBricks();
 		InstantiateBall();
 	}
@@ -50,42 +49,34 @@ public partial class Main : Node
 
 	public void InstantiateBricks()
 	{
-		GD.PrintS("Instantiate Bricks");
-		var numOfBricksToCreate = BrickRows * BrickCols;
-		GD.PrintS("numOfBricks", numOfBricksToCreate);
-		// var bricks = Enumerable.Range(0, numOfBricksToCreate).Select(x => BrickScene.Instantiate<Brick>());
+		int numOfBricksToCreate = BrickRows * BrickCols;
 		Godot.Collections.Array<Brick> bricks = new Godot.Collections.Array<Brick>();
-		GD.Print("Array created");
 		for (int i = 0; i < numOfBricksToCreate; i++)
 		{
-			GD.Print("insert array data");
 			bricks.Add(BrickScene.Instantiate<Brick>());
 		}
-		ScreenSize = GetViewport().GetVisibleRect().Size;
-		GD.PrintS("Bricks?", bricks.Count, bricks.ElementAt(0));
-		var brickSprite = bricks[0].GetNode<Sprite2D>("Sprite2D");
-		var size = brickSprite.Texture.GetSize();
-		GD.PrintS("single brick size", size);
-		var brickWidth = size.X + BrickPadding;
-		var brickHeight = size.Y + BrickPadding;
-		var gridWidth = brickWidth* BrickCols;
-		var gridHeight = brickHeight * BrickRows;
-		var colStart = (ScreenSize.X / 2) - (gridWidth / 2);
-		var rowStart = (ScreenSize.Y / 2) - (gridHeight * 0.75);
-		GD.PrintS("brick with padding", brickWidth, brickHeight, "grid size", gridWidth, gridHeight, "starting positions", colStart, rowStart);
+		Sprite2D brickSprite = bricks[0].GetNode<Sprite2D>("Sprite2D");
+		Vector2 spriteSize = brickSprite.Texture.GetSize();
+		GD.PrintS("single brick size", spriteSize);
+		float brickWithPaddingWidth = spriteSize.X + BrickPadding;
+		float brickWithPaddingHeight = spriteSize.Y + BrickPadding;
+		float gridWidth = brickWithPaddingWidth * BrickCols;
+		// float gridHeight = brickWithPaddingHeight * BrickRows;
+		float colStart = (ScreenSize.X / 2) - (gridWidth / 2) + (brickWithPaddingWidth / 2);
+		GD.PrintS("brick with padding", brickWithPaddingWidth, brickWithPaddingHeight, "grid size", gridWidth, "starting positions", colStart, TopBrickOffset);
 
 		for (int row = 0; row < BrickRows; row++)
 		{
 			for (int col = 0; col < BrickCols; col++)
 			{
-				var positionX = colStart + (brickWidth * col);
-				var positionY = (float)(rowStart + (brickHeight * row));
-				GD.PrintS("brick position", row, col, "index access", row * numOfBricksToCreate + col, positionX, positionY);
-				Brick brick = bricks[row * numOfBricksToCreate + col];
+				float positionX = colStart + (brickWithPaddingWidth * col);
+				float positionY = (float)(TopBrickOffset + (brickWithPaddingHeight * row));
+				Brick brick = bricks[row * BrickCols + col];
 				brick.Position = new Vector2(
 					x: positionX,
 					y: positionY
 				);
+				GD.PrintS("matrix position", row, col, "index access", row * BrickCols + col, "position", brick.Position);
 				AddChild(brick);
 			}
 		}
