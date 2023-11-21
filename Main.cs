@@ -18,6 +18,7 @@ public partial class Main : Node
 	public int BrickCols { get; set; }
 
 	public Vector2 ScreenSize; // Size of the game window.
+	public int Score = 0;
 
 	public override void _Ready()
 	{
@@ -47,6 +48,17 @@ public partial class Main : Node
 		AddChild(ball);
 	}
 
+	private void CheckIfLevelOver()
+	{
+		Score++;
+		GD.PrintS("Number of bricks removed", Score);
+		if (Score >= (BrickRows * BrickCols))
+		{
+			GD.PrintS("Pausing game");
+			GetTree().Paused = true;
+		}
+	}
+
 	public void InstantiateBricks()
 	{
 		int numOfBricksToCreate = BrickRows * BrickCols;
@@ -61,7 +73,6 @@ public partial class Main : Node
 		float brickWithPaddingWidth = spriteSize.X + BrickPadding;
 		float brickWithPaddingHeight = spriteSize.Y + BrickPadding;
 		float gridWidth = brickWithPaddingWidth * BrickCols;
-		// float gridHeight = brickWithPaddingHeight * BrickRows;
 		float colStart = (ScreenSize.X / 2) - (gridWidth / 2) + (brickWithPaddingWidth / 2);
 		GD.PrintS("brick with padding", brickWithPaddingWidth, brickWithPaddingHeight, "grid size", gridWidth, "starting positions", colStart, TopBrickOffset);
 
@@ -72,6 +83,7 @@ public partial class Main : Node
 				float positionX = colStart + (brickWithPaddingWidth * col);
 				float positionY = (float)(TopBrickOffset + (brickWithPaddingHeight * row));
 				Brick brick = bricks[row * BrickCols + col];
+				brick.TreeExited += CheckIfLevelOver;
 				brick.Position = new Vector2(
 					x: positionX,
 					y: positionY
