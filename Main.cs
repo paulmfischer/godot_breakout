@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Linq;
 
 public partial class Main : Node
 {
@@ -9,7 +8,11 @@ public partial class Main : Node
 	[Export]
 	public PackedScene BrickScene { get; set; }
 	[Export]
-	public float TopBrickOffset { get; set; } = 50f;
+	public PackedScene PlayerScene { get; set; }
+	[Export]
+	public float PlayerBottomOffset { get; set; } = 75f;
+	[Export]
+	public float TopBrickOffset { get; set; } = 75f;
 	[Export]
 	public float BrickPadding { get; set; } = 25.0f;
 	[Export]
@@ -17,14 +20,14 @@ public partial class Main : Node
 	[Export]
 	public int BrickCols { get; set; }
 
-	public Vector2 ScreenSize; // Size of the game window.
-	public int Score = 0;
+	private Vector2 ScreenSize; // Size of the game window.
+	private int Score = 0;
 
 	public override void _Ready()
 	{
 		ScreenSize = GetViewport().GetVisibleRect().Size;
-		InstantiateBricks();
-		InstantiateBall();
+		// InstantiateBricks();
+		// InstantiateBall();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -36,9 +39,42 @@ public partial class Main : Node
 		}
 	}
 
+	private async void NewGame()
+	{
+		Score = 0;
+		var hud = GetNode<HUD>("HUD");
+		hud.UpdateScore(Score);
+		hud.ShowMessage("Get Ready!");
+		InstantiatePlayer();
+		InstantiateBricks();
+		InstantiateBall();
+		GetTree().Paused = true;
+		await ToSignal(GetTree().CreateTimer(2.0), SceneTreeTimer.SignalName.Timeout);
+		GetTree().Paused = false;
+	}
+
 	public void OnBallExited()
 	{
-		InstantiateBall();
+		// InstantiateBall();
+		GetNode<HUD>("HUD").ShowGameOver();
+		Cleanup();
+	}
+
+	private void CheckIfLevelOver()
+	{
+		Score++;
+		var hud = GetNode<HUD>("HUD");
+		hud.UpdateScore(Score);
+		if (Score >= (BrickRows * BrickCols))
+		{
+			Cleanup();
+			hud.ShowGameOver();
+		}
+	}
+
+	public void InstantiatePlayer()
+	{
+		AddChild(PlayerScene.Instantiate<Player>());
 	}
 
 	public void InstantiateBall()
@@ -48,21 +84,11 @@ public partial class Main : Node
 		AddChild(ball);
 	}
 
-	private void CheckIfLevelOver()
-	{
-		Score++;
-		GD.PrintS("Number of bricks removed", Score);
-		if (Score >= (BrickRows * BrickCols))
-		{
-			GD.PrintS("Pausing game");
-			GetTree().Paused = true;
-		}
-	}
-
 	public void InstantiateBricks()
 	{
 		int numOfBricksToCreate = BrickRows * BrickCols;
-		Godot.Collections.Array<Brick> bricks = new Godot.Collections.Array<Brick>();
+		GD.Print("Instantiate bricks");
+		var bricks = new Godot.Collections.Array<Brick>();
 		for (int i = 0; i < numOfBricksToCreate; i++)
 		{
 			bricks.Add(BrickScene.Instantiate<Brick>());
@@ -92,5 +118,21 @@ public partial class Main : Node
 				AddChild(brick);
 			}
 		}
+	}
+
+	private void Cleanup()
+	{
+		GetNode<Player>("Player").QueueFree();
+		GetNode<Ball>("Ball").QueueFree();
+		// TODO: figure out how to cleanup the existing bricks
+		// may have to redo how we wire up TreeExited above.
+
+		// var bricks = FindChildren("*Brick*", recursive: true, owned: false);
+		// GD.PrintS("Remaining bricks to free up", bricks.Count);
+		// foreach (var brick in bricks)
+		// {
+		// 	GD.PrintS("Freeing brick", brick.IsQueuedForDeletion());
+		// 	brick.QueueFree();
+		// }
 	}
 }

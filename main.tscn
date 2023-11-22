@@ -1,23 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://cgin80jgm80pu"]
+[gd_scene load_steps=7 format=3 uid="uid://cgin80jgm80pu"]
 
 [ext_resource type="Script" path="res://Main.cs" id="1_4n8t6"]
 [ext_resource type="PackedScene" uid="uid://c8x08ihnsetid" path="res://Wall/wall.tscn" id="1_jr4pt"]
 [ext_resource type="PackedScene" uid="uid://d1gb1a2uvae2l" path="res://Player/player.tscn" id="3_jhj8d"]
 [ext_resource type="PackedScene" uid="uid://cvl0tc628ym1n" path="res://Ball/ball.tscn" id="4_7nho1"]
 [ext_resource type="PackedScene" uid="uid://syud17kvv3mv" path="res://Brick/brick.tscn" id="5_i7j1f"]
+[ext_resource type="PackedScene" uid="uid://cskdo76hiw0qm" path="res://hud.tscn" id="6_rjjb0"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_4n8t6")
 BallScene = ExtResource("4_7nho1")
 BrickScene = ExtResource("5_i7j1f")
+PlayerScene = ExtResource("3_jhj8d")
 BrickRows = 2
 BrickCols = 5
-
-[node name="Player" parent="." instance=ExtResource("3_jhj8d")]
-position = Vector2(182, 532)
-motion_mode = 1
-slide_on_ceiling = false
-PaddleBottomOffset = 0.08
 
 [node name="TopWall" parent="." instance=ExtResource("1_jr4pt")]
 position = Vector2(400, -5)
@@ -32,3 +28,7 @@ scale = Vector2(30, 1)
 position = Vector2(805, 300)
 rotation = 1.5708
 scale = Vector2(30, 1)
+
+[node name="HUD" parent="." instance=ExtResource("6_rjjb0")]
+
+[connection signal="StartGame" from="HUD" to="." method="NewGame"]
