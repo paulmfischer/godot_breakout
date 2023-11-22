@@ -8,10 +8,9 @@ friction = 0.0
 bounce = 1.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_el1a5"]
-radius = 15.0333
+radius = 11.0
 
 [node name="Ball" type="RigidBody2D"]
-scale = Vector2(0.75, 0.75)
 physics_material_override = SubResource("PhysicsMaterial_iie1p")
 max_contacts_reported = 4
 contact_monitor = true
@@ -21,6 +20,7 @@ script = ExtResource("1_a5dsc")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.75, 0.75)
 texture = ExtResource("1_htmvq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 
 public partial class Main : Node
 {
@@ -109,7 +110,7 @@ public partial class Main : Node
 				float positionX = colStart + (brickWithPaddingWidth * col);
 				float positionY = (float)(TopBrickOffset + (brickWithPaddingHeight * row));
 				Brick brick = bricks[row * BrickCols + col];
-				brick.TreeExited += CheckIfLevelOver;
+				brick.OnBrickRemoved += CheckIfLevelOver;
 				brick.Position = new Vector2(
 					x: positionX,
 					y: positionY
@@ -124,15 +125,12 @@ public partial class Main : Node
 	{
 		GetNode<Player>("Player").QueueFree();
 		GetNode<Ball>("Ball").QueueFree();
-		// TODO: figure out how to cleanup the existing bricks
-		// may have to redo how we wire up TreeExited above.
+		var bricks = this.GetChildByType<Brick>();
 
-		// var bricks = FindChildren("*Brick*", recursive: true, owned: false);
-		// GD.PrintS("Remaining bricks to free up", bricks.Count);
-		// foreach (var brick in bricks)
-		// {
-		// 	GD.PrintS("Freeing brick", brick.IsQueuedForDeletion());
-		// 	brick.QueueFree();
-		// }
+		GD.PrintS("Remaining bricks to free up", bricks.Count());
+		foreach (var brick in bricks)
+		{
+			brick.QueueFree();
+		}
 	}
 }

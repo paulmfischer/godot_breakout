@@ -3,6 +3,9 @@ using System;
 
 public partial class Brick : StaticBody2D
 {
+	[Signal]
+	public delegate void OnBrickRemovedEventHandler();
+
 	[Export]
 	public double RemoveTimer { get; set; } = 1;
 
@@ -15,5 +18,6 @@ public partial class Brick : StaticBody2D
 	public void OnRemoveBrickTimerTimeout()
 	{
 		QueueFree();
+		EmitSignal(SignalName.OnBrickRemoved);
 	}
 }
