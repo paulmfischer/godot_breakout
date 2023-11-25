@@ -7,7 +7,7 @@ public partial class Ball : RigidBody2D
 	public delegate void OnBallExitedEventHandler();
 
 	[Export]
-	public float Speed { get; set; } = 200.0f;
+	public float Speed { get; set; } = 250.0f;
 	[Export]
 	public float BallBottomOffset { get; set; } = 0.15f;
 
@@ -42,7 +42,12 @@ public partial class Ball : RigidBody2D
 			x: ScreenSize.X / 2,
 			y: ScreenSize.Y - bottomOffset
 		);
-		LinearVelocity = new Vector2(200, -200);
+		Vector2 leftVector = new Vector2(0, 0) - Position;
+		Vector2 rightVector = new Vector2(ScreenSize.X, 0) - Position;
+		RandomNumberGenerator random = new();
+		Vector2 initialVector = new Vector2(random.RandfRange(leftVector.X, rightVector.X), random.RandfRange(leftVector.Y, rightVector.Y)).Normalized();
+		GD.PrintS("random vector start", initialVector, initialVector * Speed);
+		LinearVelocity = initialVector * Speed;
 		GD.PrintS("Ball start position:", Position, "linear velocity", LinearVelocity);
 	}
 }

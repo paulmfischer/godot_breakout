@@ -6,7 +6,12 @@ public partial class HUD : CanvasLayer
 	[Signal]
 	public delegate void StartGameEventHandler();
 
-	public void ShowMessage(string text)
+    public override void _Ready()
+    {
+		GetNode<Button>("StartButton").GrabFocus();
+    }
+
+    public void ShowMessage(string text)
 	{
 		var message = GetNode<Label>("Message");
 		message.Text = text;
@@ -26,7 +31,7 @@ public partial class HUD : CanvasLayer
 		GD.Print("Display start message");
 		ShowMessage("Clear all the Blocks");
 		
-		await ToSignal(GetTree().CreateTimer(1.0), SceneTreeTimer.SignalName.Timeout);
+		// await ToSignal(GetTree().CreateTimer(1.0), SceneTreeTimer.SignalName.Timeout);
 		GetNode<Button>("StartButton").Show();
 	}
 
@@ -39,7 +44,7 @@ public partial class HUD : CanvasLayer
 
 		ShowMessage("Clear all the Blocks");
 		
-		await ToSignal(GetTree().CreateTimer(1.0), SceneTreeTimer.SignalName.Timeout);
+		// await ToSignal(GetTree().CreateTimer(1.0), SceneTreeTimer.SignalName.Timeout);
 		GetNode<Button>("StartButton").Show();
 	}
 
